@@ -10,14 +10,14 @@ tls = true
 [general.links]
 show = "*"
 public_host = "108.165.32.191"
-public_port = 443
+public_port = 8448
 
 [server]
-port = 443
+port = 8448
 max_connections = 10000
 
 # Prometheus metrics — localhost only
-metrics_port = 9090
+metrics_port = 8448
 metrics_whitelist = ["127.0.0.1/32", "::1/128"]
 
 [server.api]

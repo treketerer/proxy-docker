@@ -1,0 +1,10 @@
+services:
+  gost-bridge:
+    image: gogost/gost:latest
+    container_name: gost-bridge
+    restart: unless-stopped
+    ports:
+      - "9030:9030"
+      
+    command: -L=tcp://:9030 -F=ss://chacha20-ietf-poly1305:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}
+    
