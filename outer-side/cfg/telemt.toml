@@ -3,7 +3,7 @@ show_link = ["user"]
 [general]
 prefer_ipv6 = false
 fast_mode = true
-use_middle_proxy = false
+use_middle_proxy = true
 log_level = "normal"
 
 [general.modes]
