@@ -8,30 +8,11 @@ services:
     ports:
       - "9000:9000"
 
-  telemt:
-    image: whn0thacked/telemt-docker:latest
-    container_name: telemt
+  tg-mtproto:
+    image: nineseconds/mtg:2
+    container_name: mtg
     restart: unless-stopped
-    environment:
-      RUST_LOG: "info"
     volumes:
-      - ./cfg/telemt.toml:/etc/telemt.toml:ro
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_BIND_SERVICE
-    read_only: true
-    tmpfs:
-      - /tmp:rw,nosuid,nodev,noexec,size=16m
-    network_mode: host
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: 256M
+      - ./cfg/mtg.toml:/config.toml
+    ports:
+      - "2053:3128"

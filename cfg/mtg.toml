@@ -1,0 +1,2 @@
+secret = "ee2e1a8e19e2a8f0c9dad95d175ab06d6073332e616d617a6f6e6177732e636f6d"
+bind-to = "0.0.0.0:3128"
