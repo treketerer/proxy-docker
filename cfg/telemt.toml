@@ -1,0 +1,34 @@
+show_link = ["user1"]
+
+[general]
+prefer_ipv6 = false
+fast_mode = true
+use_middle_proxy = false
+
+[general.modes]
+classic = false 
+secure = false 
+tls = true 
+
+[server]
+port = 2053
+listen_addr_ipv4 = "0.0.0.0"
+listen_addr_ipv6 = "::"
+
+[censorship]
+tls_domain = "store.steampowered.com" 
+mask = true
+mask_port = 443
+tls_emulation = true 
+tls_front_dir = "tlsfront"
+
+[dc_overrides]
+"203" = "91.105.192.100:443"
+
+[access.users]
+user1 = "166c626cac5650a9e94ddf91b33d8eb0"
+
+[[upstreams]]
+type = "direct"
+enabled = true
+weight = 10
