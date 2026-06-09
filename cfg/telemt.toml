@@ -1,34 +1,41 @@
-show_link = ["user1"]
-
 [general]
-prefer_ipv6 = false
-fast_mode = true
-use_middle_proxy = false
+use_middle_proxy = true
+log_level = "normal"
 
 [general.modes]
-classic = false 
-secure = false 
-tls = true 
+classic = false
+secure = false
+tls = true
+
+[general.links]
+show = "*"
+public_host = "108.165.32.191"
+public_port = 443
 
 [server]
-port = 2053
-listen_addr_ipv4 = "0.0.0.0"
-listen_addr_ipv6 = "::"
+port = 443
+max_connections = 10000
+
+# Prometheus metrics — localhost only
+metrics_port = 9090
+metrics_whitelist = ["127.0.0.1/32", "::1/128"]
+
+[server.api]
+enabled = true
+listen = "127.0.0.1:9091"
+whitelist = ["127.0.0.1/32", "::1/128"]
+minimal_runtime_enabled = false
+minimal_runtime_cache_ttl_ms = 1000
+
+[[server.listeners]]
+ip = "0.0.0.0"
 
 [censorship]
-tls_domain = "store.steampowered.com" 
+# Mask domain. Do not change after links are issued — links will break.
+tls_domain = "koara.cloud"
 mask = true
-mask_port = 443
-tls_emulation = true 
+tls_emulation = true
 tls_front_dir = "tlsfront"
 
-[dc_overrides]
-"203" = "91.105.192.100:443"
-
 [access.users]
-user1 = "166c626cac5650a9e94ddf91b33d8eb0"
-
-[[upstreams]]
-type = "direct"
-enabled = true
-weight = 10
+user1 = "941ff09c32f45cec5c8af2319ca966d5"
