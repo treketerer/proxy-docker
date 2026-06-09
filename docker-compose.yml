@@ -1,0 +1,21 @@
+services:
+  shadowsocks:
+    image: teddysun/shadowsocks-rust:latest
+    container_name: shadow_proxy
+    restart: unless-stopped
+    ports:
+      - "9000:9000/tcp"
+      - "9000:9000/udp"
+    volumes:
+      - ./cfg/shadow.json:/etc/shadowsocks-rust/config.json
+    networks:
+      - dual-stack-net
+
+  
+networks:
+  dual-stack-net:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 172.33.0.0/16
+        - subnet: fd00:10:20:30::/64
