@@ -8,52 +8,62 @@ services:
     ports:
       - "9000:9000"
 
-  telemt:
-    image: ghcr.io/telemt/telemt:latest
-    container_name: telemt
+  xray:
+    image: ghcr.io/xtls/xray-core:latest
+    container_name: xray
     restart: unless-stopped
-
     ports:
-      - "443:443"
-      - "127.0.0.1:9090:9090"
-      - "127.0.0.1:9091:9091"
-
-    working_dir: /etc/telemt
-
+      - "9100:9100"
     volumes:
-      - ./cfg/telemt.toml:/etc/telemt/config.toml:ro
+      - ./cfg/xray.json:/etc/xray/config.json:ro
+    command: ["run", "-config", "/etc/xray/config.json"]
 
-    tmpfs:
-      - /etc/telemt:rw,mode=1777,size=4m
+  # telemt:
+  #   image: ghcr.io/telemt/telemt:latest
+  #   container_name: telemt
+  #   restart: unless-stopped
 
-    environment:
-      - RUST_LOG=info
+  #   ports:
+  #     - "443:443"
+  #     - "127.0.0.1:9090:9090"
+  #     - "127.0.0.1:9091:9091"
 
-    healthcheck:
-      test: [ "CMD", "/app/telemt", "healthcheck", "/etc/telemt/config.toml", "--mode", "liveness" ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 20s
+  #   working_dir: /etc/telemt
 
-    cap_drop:
-      - ALL
+  #   volumes:
+  #     - ./cfg/telemt.toml:/etc/telemt/config.toml:ro
 
-    cap_add:
-      - NET_BIND_SERVICE
+  #   tmpfs:
+  #     - /etc/telemt:rw,mode=1777,size=4m
 
-    read_only: true
+  #   environment:
+  #     - RUST_LOG=info
 
-    security_opt:
-      - no-new-privileges:true
+  #   healthcheck:
+  #     test: [ "CMD", "/app/telemt", "healthcheck", "/etc/telemt/config.toml", "--mode", "liveness" ]
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 20s
 
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 262144
+  #   cap_drop:
+  #     - ALL
 
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
+  #   cap_add:
+  #     - NET_BIND_SERVICE
+
+  #   read_only: true
+
+  #   security_opt:
+  #     - no-new-privileges:true
+
+  #   ulimits:
+  #     nofile:
+  #       soft: 65536
+  #       hard: 262144
+
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "50m"
+  #       max-file: "5"
