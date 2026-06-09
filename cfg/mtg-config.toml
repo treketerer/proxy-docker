@@ -1,0 +1,25 @@
+secret = "eeafb6cf31b20d64b681cd2334a1ac83286865747a6e65722e636f6d"
+
+bind-to = "0.0.0.0:2053"   # или 443, если освободил
+
+# Основные защиты (по умолчанию хороши, но усилим)
+tolerate-time-skewness = "5s"
+concurrency = 1024         # для личного использования хватит
+
+[domain-fronting]
+enabled = true             # обязательно
+port = 443
+
+[defense.doppelganger]
+urls = [
+  "https://www.hetzner.com/",           # подбери под свой провайдер
+  "https://www.hetzner.com/cloud",
+  # Добавь 1-2 страницы с картинками/тяжёлым контентом
+]
+repeats-per-raid = 8
+raid-each = "6h"
+drs = false
+
+# Блоклист — оставь включённым
+[defense.blocklist]
+enabled = true

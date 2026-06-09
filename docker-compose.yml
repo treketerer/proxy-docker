@@ -8,13 +8,11 @@ services:
     ports:
       - "9000:9000"
 
-  erlang-mtproto:
-    image: seriyps/mtproto-proxy:latest
-    container_name: erlang_mtproxy
+  mtg:
+    image: nineseconds/mtg:2
+    container_name: mtg-proxy
     restart: unless-stopped
-    network_mode: host
-    environment:
-      - MTP_PORT=2053
-      - MTP_SECRET=166c626cac5650a9e94ddf91b33d8eb0
-      - MTP_TAG=dcbe8f1493fa4cd9ab300891c0b5b326
-      - MTP_TLS_ONLY=t
+    ports:
+      - "2053:2053"
+    volumes:
+      - ./cfg/mtg-config.toml:/config.toml:ro 
