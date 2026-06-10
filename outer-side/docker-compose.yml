@@ -9,14 +9,26 @@ services:
       - "9000:9000"
 
   xray:
-    image: ghcr.io/xtls/xray-core:latest
+    image: alpine:latest
     container_name: xray
     restart: unless-stopped
     ports:
       - "9010:9010"
+    environment:
+      - XRAY_CLIENT_ID=${XRAY_CLIENT_ID}
+      - XRAY_PRIVATE_KEY=${XRAY_PRIVATE_KEY}
     volumes:
-      - ./cfg/xray.json:/etc/xray/config.json:ro
-    command: ["run", "-config", "/etc/xray/config.json"]
+      # Монтируем шаблон xray.template.json
+      - ./cfg/xray.template.json:/etc/xray/config.template.json:ro
+    # Автоматически скачиваем оригинальный Xray с GitHub, подставляем ключи и запускаем!
+    entrypoint: >
+      sh -c "
+      apk add --no-cache gettext curl unzip &&
+      curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip &&
+      unzip -o /tmp/xray.zip -d /usr/local/bin/ &&
+      envsubst < /etc/xray/config.template.json > /tmp/config.json &&
+      exec /usr/local/bin/xray run -config /tmp/config.json
+      "
 
   gost-tg-receiver:
     image: gogost/gost:latest
@@ -71,3 +83,32 @@ services:
       options:
         max-size: "50m"
         max-file: "5"
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    restart: always
+    ports:
+      - "9050:3001"
+    volumes:
+      - ./cfg/kuma:/app/data
+    environment:
+      - TZ=UTC  # Set the timezone
+      - UMASK=0022  # Set your file permissions manually
+    networks:
+      - kuma_network  # add your own custom network config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  kuma_network:
+    driver: bridge
