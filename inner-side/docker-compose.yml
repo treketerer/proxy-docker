@@ -7,4 +7,16 @@ services:
       - "9030:9030"
       
     command: -L=tcp://:9030 -F=ss://chacha20-ietf-poly1305:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}
-    
+  
+  adguard-dns:
+    image: adguard/adguardhome
+    container_name: adguard-dns
+    restart: unless-stopped
+    volumes:
+      - ./adguard-cfg/workdir:/opt/adguardhome/work
+      - ./adguard-cfg/confdir:/opt/adguardhome/conf 
+    ports:
+      - "9039:3000/tcp" # Порт 9039 для ПЕРВОНАЧАЛЬНОЙ настройки
+      - "9040:80/tcp"   # Порт 9040 для ПАНЕЛИ УПРАВЛЕНИЯ после настройки
+      - "53:53/tcp"     # Стандартный DNS TCP
+      - "53:53/udp"     # Стандартный DNS UDP

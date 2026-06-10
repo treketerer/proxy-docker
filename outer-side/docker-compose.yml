@@ -13,7 +13,7 @@ services:
     container_name: xray
     restart: unless-stopped
     ports:
-      - "9010:9010"
+      - "443:443"
     environment:
       - XRAY_CLIENT_ID=${XRAY_CLIENT_ID}
       - XRAY_PRIVATE_KEY=${XRAY_PRIVATE_KEY}
@@ -29,6 +29,15 @@ services:
       envsubst < /etc/xray/config.template.json > /tmp/config.json &&
       exec /usr/local/bin/xray run -config /tmp/config.json
       "
+
+  # SNI ретранслятор для связки с DNS
+  gost-sni-fallback:
+    image: gogost/gost:latest
+    container_name: gost-sni-fallback
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9040:9040" # Локальный порт 9040
+    command: -L=sni://:9040
 
   gost-tg-receiver:
     image: gogost/gost:latest
