@@ -7,23 +7,3 @@ services:
       - "9030:9030"
       
     command: -L=tcp://:9030 -F=ss://chacha20-ietf-poly1305:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}
-  
-  smartdns:
-    image: pymumu/smartdns:latest
-    container_name: smartdns
-    restart: unless-stopped
-    ports:
-      - "53:53/udp"
-      - "53:53/tcp"
-    environment:
-      - OUTER_SIDE_IP=${OUTER_SIDE_IP} 
-    volumes:
-      # Монтируем шаблоны
-      - ./cfg/smartdns.template.conf:/etc/smartdns/smartdns.template.conf:ro
-      - ./cfg/blocked-domains.txt:/etc/smartdns/blocked-domains.txt:ro
-      - ./cfg-generated:/etc/smartdns-gen
-    entrypoint: >
-      sh -c "
-      sed 's/__OUTER_SIDE_IP__/${OUTER_SIDE_IP}/g' /etc/smartdns/smartdns.template.conf > /etc/smartdns-gen/smartdns.conf &&
-      exec /usr/sbin/smartdns -f -x -c /etc/smartdns-gen/smartdns.conf
-      "
