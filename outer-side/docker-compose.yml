@@ -44,7 +44,7 @@ services:
     container_name: gost-receiver
     restart: unless-stopped
     # Принимаем шифрованный shadowsocks-туннель на порту 9000 и пересылаем локально на telemt:9020
-    command: -L=ss://chacha20-ietf-poly1305:${GOST_PASSWORD}@:9020 -F=tcp://telemt:9030
+    command: -L=ss://aes-128-gcm:${GOST_PASSWORD}@:9020?nodelay=true -F=tcp://telemt:9030?nodelay=true
     ports:
       - "9020:9020"
 

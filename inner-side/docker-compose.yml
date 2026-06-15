@@ -6,4 +6,5 @@ services:
     ports:
       - "9030:9030"
       
-    command: -L=tcp://:9030 -F=ss://chacha20-ietf-poly1305:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}
+    command: -L=tcp://:9030?nodelay=true -F=ss://aes-128-gcm:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}?nodelay=true
+    
