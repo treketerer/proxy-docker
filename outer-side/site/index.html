@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Lightspot</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #b3d9ff 0%, #e8f2fc 60%, #ffffff 100%);
+      padding: 20px;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .brand-icon-box {
+      width: 52px;
+      height: 52px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .brand-icon-box svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .brand-text-logo {
+      height: 22px;
+      width: auto;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+
+    p.subtitle {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    /* Заменили div на тег form для работы с отправкой */
+    form.form-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper svg.field-icon {
+      position: absolute;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      stroke: #94a3b8;
+      pointer-events: none;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px 0 42px;
+      background: rgba(241, 245, 249, 0.7);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      border-radius: 12px;
+      font-size: 14px;
+      color: #0f172a;
+      outline: none;
+      /* Убрали cursor: default, чтобы инпуты были активными */
+    }
+
+    .input-wrapper input:focus {
+      border-color: #94a3b8;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .forgot-wrapper {
+      text-align: right;
+      margin-top: 2px;
+      margin-bottom: 4px;
+    }
+
+    .forgot-link {
+      font-size: 13px;
+      color: #475569;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-submit {
+      height: 48px;
+      background: #18181b;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transition: background 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background: #27272a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <div class="brand-icon-box">
+      <svg viewBox="0 0 1856 1863" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_30_581)">
+          <path d="M1855.8 243.828C1855.8 109.165 1746.64 0 1611.97 0L1093.95 0L818.196 0C714.268 0 621.762 65.8755 587.775 164.089L160.982 1397.39C94.9981 1588.06 275.939 1771.79 467.601 1708.74L1360.92 1414.85L1703.04 1277.1C1795.34 1239.94 1855.8 1150.42 1855.8 1050.92V728.666V243.828Z" fill="white"/>
+          <path d="M1755.8 269.349C1754.47 180.376 1681.84 109.013 1592.86 109.236L1421.99 109.664L820.991 109.664C751.792 109.664 690.178 153.474 667.454 218.835L639.712 298.63L341.226 1158.06L256.084 1403.17C211.51 1531.5 334.669 1654.64 462.99 1610.06L708.119 1524.88L1655.66 1209.6L1664.08 1205.62C1720.97 1178.74 1757.23 1121.45 1757.18 1058.53L1756.65 325.722L1755.8 269.349ZM1487.33 213.572C1575.8 214.727 1647.1 286.431 1647.75 374.909L1651.58 892.434C1652.25 983.039 1578.71 1056.7 1488.1 1056.18L969.724 1053.23C881.028 1052.72 809.112 981.202 808.111 892.51L802.229 371.15C801.199 279.832 875.577 205.586 966.892 206.778L1487.33 213.572Z" fill="black"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_30_581">
+            <rect width="1855.8" height="1862.57" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="subtitle">Make a new doc to bring your words, data, and teams together.</p>
+
+    <!-- Форма для сбора данных и отправки запроса -->
+    <form class="form-visual" id="loginForm">
+      <div class="input-wrapper">
+        <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+        </svg>
+        <input type="email" id="emailInput" placeholder="name@work-email.com" required>
+      </div>
+
+      <div class="input-wrapper">
+        <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25z" />
+        </svg>
+        <input type="password" id="passwordInput" placeholder="Password" required>
+      </div>
+
+      <div class="forgot-wrapper">
+        <a href="#" class="forgot-link" onclick="alert('Password reset link sent!'); return false;">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-submit">Continue with Email</button>
+    </form>
+  </div>
+
+  <script>
+    // Перехватываем отправку формы, чтобы отправить запрос "в никуда" и не перезагружать страницу
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Предотвращаем стандартную перезагрузку страницы
+
+      const email = document.getElementById('emailInput').value;
+      const password = document.getElementById('passwordInput').value;
+
+      // Отправляем асинхронный POST-запрос на несуществующий/абстрактный адрес.
+      // Метод catch гарантирует, что даже если сервер не ответит (ошибка сети/404), страница не упадет.
+      fetch('https://example.org/api/never-responded', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, password: password })
+      })
+      .catch(error => {
+        // Запрос улетел, но ответа мы намеренно не ждем / игнорируем ошибку сети
+        console.log('Запрос отправлен (и, как ожидалось, не получил ответа)');
+      });
+
+      // Визуальная реакция для пользователя (например, очистка или оповещение)
+      alert('Запрос отправлен!');
+    });
+  </script>
+
+</body>
+</html>

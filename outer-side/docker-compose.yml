@@ -8,37 +8,6 @@ services:
     ports:
       - "9000:9000"
 
-  xray:
-    image: alpine:latest
-    container_name: xray
-    restart: unless-stopped
-    ports:
-      - "443:443"
-    environment:
-      - XRAY_CLIENT_ID=${XRAY_CLIENT_ID}
-      - XRAY_PRIVATE_KEY=${XRAY_PRIVATE_KEY}
-    volumes:
-      # Монтируем шаблон xray.template.json
-      - ./cfg/xray.template.json:/etc/xray/config.template.json:ro
-    # Автоматически скачиваем оригинальный Xray с GitHub, подставляем ключи и запускаем!
-    entrypoint: >
-      sh -c "
-      apk add --no-cache gettext curl unzip &&
-      curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip &&
-      unzip -o /tmp/xray.zip -d /usr/local/bin/ &&
-      envsubst < /etc/xray/config.template.json > /tmp/config.json &&
-      exec /usr/local/bin/xray run -config /tmp/config.json
-      "
-
-  # SNI ретранслятор для связки с DNS
-  gost-sni-fallback:
-    image: gogost/gost:latest
-    container_name: gost-sni-fallback
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:9040:9040" # Локальный порт 9040
-    command: -L=sni://:9040
-
   gost-tg-receiver:
     image: gogost/gost:latest
     container_name: gost-receiver
@@ -46,7 +15,52 @@ services:
     # Принимаем шифрованный shadowsocks-туннель на порту 9000 и пересылаем локально на telemt:9020
     command: -L=ss://aes-128-gcm:${GOST_PASSWORD}@:9020?nodelay=true -F=tcp://telemt:9030?nodelay=true
     ports:
-      - "9020:9020"
+      - "9010:9010"
+
+  
+  nginx:
+    image: nginx:alpine
+    container_name: telemt-web-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./site:/usr/share/nginx/html:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    deploy:
+      resources:
+        limits:
+          memory: 32M  # NGINX в режиме раздачи статики потребляет около 10-15 МБ
+    depends_on:
+      - telemt_web
+      
+      
+  telemt_web:
+    image: ghcr.io/telemt/telemt:latest
+    container_name: telemt
+    restart: unless-stopped
+    volumes:
+      - ./config:/etc/telemt:rw
+    tmpfs:
+      - /run/telemt:rw,mode=1777,size=2m  # Уменьшили tmpfs с 4m до 2m
+    environment:
+      - RUST_LOG=error  # Логируем только ошибки, снижает нагрузку на I/O и память
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    deploy:
+      resources:
+        limits:
+          memory: 64M  # Жесткий лимит: Telemt потребляет совсем мало RAM
+  command: ["/etc/telemt/config.toml"]
 
   telemt:
     image: ghcr.io/telemt/telemt:latest
@@ -55,7 +69,8 @@ services:
 
     ports:
       - "9030:9030"
-
+      - "9020:9020"
+      
     working_dir: /etc/telemt
     volumes:
       - ./cfg/telemt.toml:/etc/telemt/config.toml:ro
