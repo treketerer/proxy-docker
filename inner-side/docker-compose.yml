@@ -3,8 +3,10 @@ services:
     image: gogost/gost:latest
     container_name: gost-bridge
     restart: unless-stopped
+
     ports:
       - "9030:9030"
-      
-    command: -L=tcp://:9030?nodelay=true -F=ss://aes-128-gcm:${GOST_PASSWORD}@${OUTER_SIDE_IP}:${OUTER_SIDE_PORT}?nodelay=true
-    
+
+    command: >
+      -L=tcp://:9030?nodelay=true
+      -F=ss://aes-128-gcm:${GOST_PASSWORD}@${OUTER_SIDE_IP}:9020?nodelay=true
