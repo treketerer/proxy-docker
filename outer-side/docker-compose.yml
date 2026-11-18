@@ -70,7 +70,7 @@ services:
 
     volumes:
       - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./site:/usr/share/nginx/html:ro
+      - ./certbot/www:/var/www/certbot:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
 
     depends_on:
@@ -81,8 +81,8 @@ services:
     container_name: uptime-kuma
     restart: unless-stopped
 
-    ports:
-      - "9050:3001"
+    expose:
+      - "3001"
 
     volumes:
       - ./config/kuma:/app/data
